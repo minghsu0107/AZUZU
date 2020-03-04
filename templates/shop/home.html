@@ -1,0 +1,254 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Varela+Round" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" rel="stylesheet"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/brands.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'shop/css/home.css' %}">
+    <title>AZUZU</title>
+    <style>
+        .about{
+            margin: 1em 0;
+            padding: 1em;
+            position: relative;
+            background-color: white;
+        }
+        .about h2{
+            margin: 1em;
+            color:  #10828C;
+        }
+        .about img{
+            height: 100%;
+            width: 80vw;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .about .desc{
+            padding: 2em;
+            border-left:4px solid #10828C;
+        }
+        .about .desc h4{
+            color: #10828C;
+        }
+        .about .desc p{
+            line-height:2;
+            color:#888;
+        }
+        .content{
+            color: white;
+            text-shadow: 0px 4px 3px rgba(0,0,0,0.1),
+                         0px 8px 13px rgba(0,0,0,0.5),
+                         0px 18px 23px rgba(0,0,0,0.5);
+            
+        }
+        .content h1 {
+            font-weight: 400;
+            font-size: 5em;
+        }
+    </style>
+</head>
+
+<body> 
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand index-click mx-lg-4" href="#home"><h2>AZUZU</h2></a>
+            <a id="cart" data-html="true" role="button" class="btn btn-outline-secondary navbar-brand-sm popupover mx-lg-5" data-container="body" data-toggle="popover" data-placement="bottom" data-trigger="click" data-boundary="scrollParent" tabindex="0" style="border-radius: 15px;"></a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">Products</a>
+                    </li>
+                </ul>
+                <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" style="margin-right: 18%">
+                    <form class="form-inline input-group my-2 my-lg-0">
+                        <input name='item_name' class="form-control" type="text" placeholder="search for products or categories.." aria-label="Search">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-info"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+    {% if success_order %}
+    <div class="row row-alert" style="top: 120px; z-index: 3; position:absolute; width: 100%; margin-left: 20%">
+        <div class="alert alert-success" style="width: 60%">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+           <span class="glyphicon glyphicon-ok"> <center><strong>Success Message</strong></center></span>
+            <hr class="message-inner-separator">
+            <center><p>You order is confirmed.</p></center>
+        </div>
+    </div>
+    <script>
+        localStorage.clear();
+    </script>
+    {% elif success_contact %}
+    <div class="row row-alert" style="top: 120px; z-index: 3; position:absolute; width: 100%; margin-left: 20%">
+        <div class="alert alert-success" style="width: 60%">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+           <span class="glyphicon glyphicon-ok"> <center><strong>Success Message</strong></center></span>
+            <hr class="message-inner-separator">
+            <center><p>We will contact you soon.</p></center>
+        </div>
+    </div>
+    {% endif %}
+    <div class="container d-none d-lg-block" style="z-index: 2; position:absolute; width: 100%; text-align: center; top: 340px; margin-left: 10%">
+        <div class="content">
+            <h1>AZUZU</h1>
+            <h3>The Shop.</h3>
+        </div>
+    </div>
+    <div class="carousel slide carousel-fade" data-ride="carousel" data-interval="3000" id="demo" style="margin-top: 74px;">
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+        </ul>
+        <div class="carousel-inner" style="filter: brightness(50%);">
+            {% for product in product_objects %}
+                <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+                    <img class="img-adjust" src="{{product.image.url}}" alt="">
+                </div>
+            {% endfor %}
+            <a class="carousel-control-prev" role="button" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+             <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </div>
+    <!-- about section -->
+    <div class="about" id="about">
+        <div class="container">
+            <h2 class="text-center">About AZUZU</h2>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 desc">
+                    <p>
+                       In 2014, Peng was cast as Wong Fei-hung in Rise of the Legend, the latest film about the iconic Kung-Fu master. He reportedly practiced 10 hours of martial arts every day to prepare for the role. Peng was nominated in the Best Actor category at the 34th Hong Kong Film Award. The same year, he starred in historical drama Sound of the Desert and coming-of-age film Fleet of Time, which were both commercial successes. Peng's achievements in both the film and television industry brought his career to a new height.
+                    </p>
+                    <br>
+                    <p>
+                       In 2014, Peng was cast as Wong Fei-hung in Rise of the Legend, the latest film about the iconic Kung-Fu master. He reportedly practiced 10 hours of martial arts every day to prepare for the role. Peng was nominated in the Best Actor category at the 34th Hong Kong Film Award. The same year, he starred in historical drama Sound of the Desert and coming-of-age film Fleet of Time, which were both commercial successes. Peng's achievements in both the film and television industry brought his career to a new height.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- about section -->
+    <div class="about" id="about">
+        <div class="container">
+            <h2 class="text-center">Our Team</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <img src="/static/shop/img/brand.png" class="img-fluid">
+                </div>
+                <div class="col-lg-8 col-md-12 col-sm-12 desc">
+                  
+                    <h4>Yu-Yan, Peng</h4>
+                    <p>
+                       In 2014, Peng was cast as Wong Fei-hung in Rise of the Legend, the latest film about the iconic Kung-Fu master. He reportedly practiced 10 hours of martial arts every day to prepare for the role. Peng was nominated in the Best Actor category at the 34th Hong Kong Film Award. The same year, he starred in historical drama Sound of the Desert and coming-of-age film Fleet of Time, which were both commercial successes. Peng's achievements in both the film and television industry brought his career to a new height.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="wrapper">
+        <footer class="pt-5 pb-4" id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-2 mb-4">
+                        <h5 class="mb-4 font-weight-bold">ABOUT US</h5>
+                        <p class="mb-4">We provide the best.</p>
+                        <ul class="f-address">
+                            <li>
+                                <div class="row">
+                                    <div class="col-1"><i class="fas fa-map-marker"></i></div>
+                                    <div class="col-8">
+                                        <h6 class="font-weight-bold mb-0">Address:</h6>
+                                        <p>No.1, Sec. 4, Roosevelt Road, Taipei, 10617 Taiwan.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-1"><i class="far fa-envelope"></i></div>
+                                    <div class="col-8">
+                                        <h6 class="font-weight-bold mb-0">Have any questions?</h6>
+                                        <p><a href="#">minghsu0107@gmail.com</a></p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-1"><i class="fas fa-phone-volume"></i></div>
+                                    <div class="col-8">
+                                        <h6 class="font-weight-bold mb-0">Address:</h6>
+                                        <p><a href="#">+886 (0) 938913915</a></p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 col-sm-6 mt-2 mb-4">
+                        <h5 class="mb-4 font-weight-bold">CONNECT WITH US</h5>
+                        <div class="row mx-2">
+                            <form method="POST" action="." class="input-group">
+                                {% csrf_token %}
+                                <input name="contact_email" type="email" class="form-control" placeholder="Your Email Address" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-info" id="basic-addon2"><i class="fa fa-check"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row mx-2">
+                        <ul class="social-pet mt-4">
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" title="twitter"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" title="google-plus"><i class="fab fa-google-plus-g"></i></a></li>
+                            <li><a href="#" title="instagram"><i class="fab fa-instagram"></i></a></li>
+                        </ul>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Copyright -->
+        <section class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="text-center text-white">
+                            &copy; 2020 Ming Hsu. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <button type="button" id="BackTop" class="toTop-arrow"></button>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{% static 'shop/js/cart.js' %}"></script>
+</body>
+
+</html>

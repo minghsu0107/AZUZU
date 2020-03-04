@@ -1,0 +1,213 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Varela+Round" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" rel="stylesheet"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/brands.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'shop/css/index.css' %}">
+    <title>AZUZU</title>
+</head>
+
+<body> 
+    <div class="container">      
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand index-click mx-lg-4" href="#home"><h2>AZUZU</h2></a>
+            <a id="cart" data-html="true" role="button" class="btn btn-outline-secondary navbar-brand-sm popupover mx-lg-5" data-container="body" data-toggle="popover" data-placement="bottom" data-trigger="click" data-boundary="scrollParent" tabindex="0" style="border-radius: 15px;"></a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'index' %}">Products</a>
+                    </li>
+                </ul>
+                <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" style="margin-right: 18%">
+                    <form class="form-inline input-group my-2 my-lg-0">
+                        <input name='item_name' class="form-control" type="text" placeholder="search for products or categories.." aria-label="Search">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-info"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <br><br><br>
+        <div class="row m-5">
+            {% for product in product_objects %}
+            <div class="col-md-4">
+                <div class="d-none d-lg-block border">
+                        <div class="card" style="{% if forloop.counter <= 3%} margin-top:-40px {% endif %}">
+                            <a href="/products/{{product.id}}" style="text-decoration: none;">
+                            <img src="{{ product.image.url }}" class="card-img-top img-lg">
+                            <div class="card-body">
+                                <center><div id="nm{{product.id}}" class="card-title" style="color: black">{{product.title}}</div></center>
+                                <center><div id="price{{product.id}}" class="card-text mb-2">{{ product.price|floatformat:1|intcomma }}</div></center>
+                            </a>
+                                <button id="{{product.id}}" class="btn btn-cart atc btn-outline-info"><i class="fas fa-cart-plus"></i></button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="d-lg-none">
+                    <div class="card">
+                        <a href="/products/{{product.id}}" style="text-decoration: none;">
+                        <img src="{{ product.image.url }}" class="card-img-top img-lg">
+                        <div class="card-body">
+                            <center><div id="nm{{product.id}}" class="card-title" style="color: black">{{product.title}}</div></center>
+                            <center><div id="price{{product.id}}" class="card-text">{{ product.price|floatformat:1|intcomma }}</div></center>
+                        </a>
+                            <button ontouchstart="" id="{{product.id}}" class="btn btn-cart atc btn-outline-info"><i class="fas fa-cart-plus"></i></button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if not product_objects %}
+        <div class="d-none d-lg-block">
+            <div class="card" style="margin-top: 15%; margin-bottom: 14.9%">
+                <div class="card-body" style="text-align: center">
+                    <div class="card-title"><h5 style="color: gray">Sorry, your search did not match any products.</h5></div>
+                </div>
+            </div>
+        </div>
+        <div class="d-lg-none">
+            <div class="card mb-4" style="margin-top: 10%;">
+                <div class="card-body" style="text-align: center">
+                    <div class="card-title"><h5 style="color: gray">Sorry, your search did not match any products.</h5></div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row justify-content-center">
+            {% if product_objects.has_other_pages %}
+            <ul class="pagination justify-content-center flex-wrap">
+                {% if product_objects.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ product_objects.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link">First</a></li>
+                <li class="page-item disabled"><a class="page-link">&laquo;</a></li>
+                {% endif %} 
+                {% for i in product_objects.paginator.page_range %} 
+                    {% if product_objects.number == i %}
+                    <li class="page-item">
+                        <a class="page-link active">{{ i }} <span class="sr-only">(current)</span></a>
+                    </li>
+                    {% elif i > product_objects.number|add:'-3' and i < product_objects.number|add:'3' %} 
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                    {% endif %} 
+                {% endfor %} 
+                {% if product_objects.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ product_objects.next_page_number }}">&raquo;</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ product_objects.paginator.num_pages }}">Last</a></li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link">&raquo;</a></li>
+                <li class="page-item disabled"><a class="page-link">Last</a></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="wrapper">
+        <footer class="pt-5 pb-4" id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-2 mb-4">
+                        <h5 class="mb-4 font-weight-bold">ABOUT US</h5>
+                        <p class="mb-4">We provide the best.</p>
+                        <ul class="f-address">
+                            <li>
+                                <div class="row">
+                                    <div class="col-1"><i class="fas fa-map-marker"></i></div>
+                                    <div class="col-8">
+                                        <h6 class="font-weight-bold mb-0">Address:</h6>
+                                        <p>No.1, Sec. 4, Roosevelt Road, Taipei, 10617 Taiwan.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-1"><i class="far fa-envelope"></i></div>
+                                    <div class="col-8">
+                                        <h6 class="font-weight-bold mb-0">Have any questions?</h6>
+                                        <p><a href="#">minghsu0107@gmail.com</a></p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-1"><i class="fas fa-phone-volume"></i></div>
+                                    <div class="col-8">
+                                        <h6 class="font-weight-bold mb-0">Address:</h6>
+                                        <p><a href="#">+886 (0) 938913915</a></p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 col-sm-6 mt-2 mb-4">
+                        <h5 class="mb-4 font-weight-bold">CONNECT WITH US</h5>
+                        <div class="row mx-2">
+                            <form method="POST" action="{% url 'home' %}" class="input-group">
+                                {% csrf_token %}
+                                <input name="contact_email" type="email" class="form-control" placeholder="Your Email Address" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-info" id="basic-addon2"><i class="fa fa-check"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row mx-2">
+                        <ul class="social-pet mt-4">
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" title="twitter"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" title="google-plus"><i class="fab fa-google-plus-g"></i></a></li>
+                            <li><a href="#" title="instagram"><i class="fab fa-instagram"></i></a></li>
+                        </ul>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Copyright -->
+        <section class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="text-center text-white">
+                            &copy; 2020 Ming Hsu. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <button type="button" id="BackTop" class="toTop-arrow"></button>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{% static 'shop/js/cart.js' %}"></script>
+</body>
+
+</html>
