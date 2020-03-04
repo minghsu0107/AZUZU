@@ -8,6 +8,7 @@
 ## Prerequisites
 - `nginx>=1.17.3`
 - `PostgreSQL>=12.1`
+
 See more details in `requirements.txt`.
 
 ## Set Up
