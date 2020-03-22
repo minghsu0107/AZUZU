@@ -20,6 +20,11 @@ See more details in `requirements.txt`.
 5. Create superuser by running `python manage.py createsuperuser`.
 
 ## Usage
+```
+python manage.py makemigrations
+python manage.py migrate
+python manage.py collectstatic
+```
 Start server:
 ```
 ./start.sh
