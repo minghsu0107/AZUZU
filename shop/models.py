@@ -3,6 +3,22 @@ from django.utils import timezone
 from django.dispatch import receiver
 import datetime, os
 from django.contrib.postgres.fields import ArrayField, JSONField
+from sorl.thumbnail import get_thumbnail
+
+from io import BytesIO
+from PIL import Image
+from django.core.files import File
+
+
+def compress(image):
+    im = Image.open(image)
+    # create a BytesIO object
+    im_io = BytesIO() 
+    # save image to BytesIO object
+    im.save(im_io, 'JPEG', quality=70) 
+    # create a django-friendly Files object
+    new_image = File(im_io, name=image.name)
+    return new_image
 
 # Create your models here.
 class Product(models.Model):
@@ -19,6 +35,21 @@ class Product(models.Model):
     category = ArrayField(base_field=models.CharField(max_length=200), default=list)
     description = models.TextField()
     image = models.ImageField(upload_to='images/')
+    
+    @property
+    def thumbnail(self):
+        if self.image:
+            return get_thumbnail(self.image, '350x350', quality=90)
+        return None
+
+    def save(self, *args, **kwargs):
+        # call the compress function
+        new_image = compress(self.image)
+        # set self.image to new_image
+        self.image = new_image
+        # save
+        super().save(*args, **kwargs)
+
     
 class Order(models.Model):
 
