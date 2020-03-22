@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.dispatch import receiver
 import datetime, os
 from django.contrib.postgres.fields import ArrayField, JSONField
-from sorl.thumbnail import get_thumbnail
 
 from io import BytesIO
 from PIL import Image
@@ -35,12 +34,6 @@ class Product(models.Model):
     category = ArrayField(base_field=models.CharField(max_length=200), default=list)
     description = models.TextField()
     image = models.ImageField(upload_to='images/')
-    
-    @property
-    def thumbnail(self):
-        if self.image:
-            return get_thumbnail(self.image, '350x350', quality=90)
-        return None
 
     def save(self, *args, **kwargs):
         # call the compress function
