@@ -47,16 +47,21 @@
                         <img src="{{ product_object.image.url }}" class="card-img-top">
                     </div>
                 </div>
-                <div class="d-lg-none">
-                    <div class="card" style="width: 400px; margin-left: -70px;">
+                <div class="d-none d-md-block d-lg-none">
+                    <div class="card" style="width: 450px; margin-left: -75px">
+                        <img src="{{ product_object.image.url }}" class="card-img-top">
+                    </div>
+                </div>
+                <div class="d-block d-sm-none">
+                    <div class="card" style="width: 100vw; margin-left: -4.88em">
                         <img src="{{ product_object.image.url }}" class="card-img-top">
                     </div>
                 </div>
             </div>
             <div class="col-md-4 col-xs-12">
                 <div class="row">
-                    <div class="card">
-                        <div class="card-body" style="width: 20rem;">
+                    <div class="card ml-0" style="width: 20rem;">
+                        <div class="card-body" style="">
                             <h5 id="nm{{product_object.id}}" class="card-title">{{product_object.title}}</h5>
                         </div>
                         <ul class="list-group list-group-flush">
@@ -70,7 +75,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="card" style="width: 20rem;">
+                    <div class="card ml-0" style="width: 20rem;">
                         <div class="card-body">
                             <h5 class="card-title">Description</h5>
                             <p class="card-text">{{product_object.description|linebreaksbr}}</p>
@@ -78,7 +83,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="card" style="width: 20rem;">
+                    <div class="card ml-0" style="width: 20rem;">
                         <div class="card-body mt-3 mb-2">
                             <form id="view-add" class="form-inline input-group">
                                 <div class="input-group-prepend">
