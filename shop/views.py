@@ -58,8 +58,12 @@ def detail(request, id):
     if item_name != '' and item_name is not None:
         return HttpResponseRedirect(reverse('index') + f'?item_name={item_name}')
 
-    product_object = Product.objects.get(id=id)
-    return render(request,'shop/detail.html', {'product_object':product_object})
+    try:
+        product_object = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return render(request,'shop/index.html', {'product_objects': None})
+
+    return render(request,'shop/detail.html', {'product_object': product_object})
     
 def checkout(request):
     shipping = 60
