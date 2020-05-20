@@ -1,5 +1,4 @@
 # AZUZU
-[My demo site](http://linux7.csie.ntu.edu.tw:7070/)
 ## Features
 - fast loading speed
 - dynamic shopping cart with local storage
