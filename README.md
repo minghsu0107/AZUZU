@@ -1,5 +1,5 @@
 # AZUZU
-https://i.imgur.com/LCKEW4i.png
+![](https://i.imgur.com/LCKEW4i.png)
 ## Demo
 Please visit the demo site [here](http://linux7.csie.ntu.edu.tw:7070).
 ## Features
